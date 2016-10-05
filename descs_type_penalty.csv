@@ -1,0 +1,47 @@
+description,type,penalty
+Reaction to Other Uninvolved Vehicle,low,100
+Windshield Inadequate,low,100
+Failure to Keep Right,low,100
+Passing or Lane Usage Improper,low,100
+Turning Improperly,low,100
+Prescription Medication,low,100
+Accelerator Defective,high,600
+Tire Failure/Inadequate,medium,300
+Driver Inattention/Distraction,medium,300
+Backing Unsafely,medium,300
+Using On Board Navigation Device,high,600
+Failure to Yield Right-of-Way,low,100
+Pavement Defective,false,0
+Driverless/Runaway Vehicle,false,0
+Obstruction/ Debris,false,0
+Brakes Defective,medium,300
+Glare,low,100
+Physical Disability,high,600
+Fatigued/Drowsy,low,100
+Unsafe Lane Changing,low,100
+Eating or Drinking,medium,300
+Tinted Windows,low,100
+Texting,high,600
+Cell Phone (hand held),high,600
+Outside Car Distraction,low,100
+Listening/Using Headphones,high,600
+Fell Asleep,high,600
+Passing Too Closely,low,100
+View Obstructed/Limited,low,100
+Oversized Vehicle,medium,300
+Driver Inexperience,false,0
+Unsafe Speed,high,600
+Steering Failure,medium,300
+Animal's Action,false,0
+Following Too Closely,medium,300
+Cell Phone (hands-free),high,600
+Traffic Control Device Disregarded,high,600
+Passenger Distraction,low,100
+Drugs (Illegal),high,600
+Lane Marking Improper/Inadequate,low,100
+Headlights Defective,medium,300
+Alcohol Involvement,high,600
+Pedestrian/Bicyclist Error/Confusion,high,600
+Aggressive Driving/Road Rage,high,600
+Illness,low,100
+Lost Consciousness,false,0
