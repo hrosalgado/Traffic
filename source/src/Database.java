@@ -5,17 +5,49 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.omg.CORBA.INTERNAL;
-
 import com.csvreader.CsvReader;
 
 public class Database{
+	/*public static void test(Connection connection){
+		try{			
+			Statement statement = connection.createStatement();
+			
+			String query;
+			query = "INSERT INTO datetime(idDatetime, day, month, year, hour, season, weather, weekend, holiday)"
+						+ " VALUES(0, 1, 1, 2016, 0, 'winter', 'rainy', 0, 1)";
+			
+			statement.executeUpdate(query);
+			
+			query = "INSERT INTO driver(idDriver, age, sex, experience, previous_infractions, illness)"
+						+ " VALUES(0, 22, 0, 4, 0, 0)";
+			
+			statement.executeUpdate(query);
+			
+			query = "INSERT INTO kmpoint(idKmPoint, start, end, road_name, road_type, black_point, signposting, radar)"
+						+ " VALUES(0, 0, 1, 'A-52', 'roadway', 0, 1, 0)";
+			
+			statement.executeUpdate(query);
+			
+			query = "INSERT INTO vehicle(idVehicle, type, brand, car_spaces, passengers, antiquity, drive_permission, electric)"
+						+ " VALUES(0, 'car', 'lamborgini', 2, 2, 4, 1, 0)";
+			
+			statement.executeUpdate(query);
+			
+			query = "INSERT INTO infraction(idInfraction, idDriver, idDatetime, idKmPoint, idVehicle, type, description, penalty)"
+						+ " VALUES(0, 0, 0, 0, 0, 'low', 'not view straight line', 100)";
+			
+			statement.executeUpdate(query);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}*/
+	
 	public static Connection ConnectDB(){
 		final String url = "jdbc:mysql://localhost:3306/";
 		final String dbName = "traffic";
 		final String driver = "com.mysql.jdbc.Driver";
-		final String username = "root";
-		final String password = "";
+		final String username = "traffic";
+		final String password = "traffic";
 		
 		try{
 			Class.forName(driver).newInstance();

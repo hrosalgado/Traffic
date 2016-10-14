@@ -27,6 +27,7 @@ public class Main{
 		// Database.addDriver(connection);
 		// Database.addKmPoint(connection);
 		// Database.vehicle(connection);
-		Database.infraction(connection);
+		// Database.infraction(connection);
+		/* Database.test(connection); */
 	}
 }
