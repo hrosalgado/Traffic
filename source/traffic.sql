@@ -14,18 +14,18 @@ CREATE SCHEMA IF NOT EXISTS `traffic` DEFAULT CHARACTER SET utf8 ;
 USE `traffic` ;
 
 -- -----------------------------------------------------
--- Table `traffic`.`Drivers`
+-- Table `traffic`.`Driver`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `traffic`.`Drivers` ;
+DROP TABLE IF EXISTS `traffic`.`Driver` ;
 
-CREATE TABLE IF NOT EXISTS `traffic`.`Drivers` (
-  `idDrivers` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `traffic`.`Driver` (
+  `idDriver` INT NOT NULL,
   `age` INT(2) NOT NULL,
   `sex` TINYINT(1) NOT NULL,
   `experience` INT(2) NOT NULL,
-  `illness` TINYINT(1) NOT NULL,
   `previous_infractions` INT(2) NOT NULL,
-  PRIMARY KEY (`idDrivers`))
+  `illness` TINYINT(1) NOT NULL,
+  PRIMARY KEY (`idDriver`))
 ENGINE = InnoDB;
 
 
@@ -55,9 +55,12 @@ DROP TABLE IF EXISTS `traffic`.`KmPoint` ;
 
 CREATE TABLE IF NOT EXISTS `traffic`.`KmPoint` (
   `idKmPoint` INT NOT NULL,
-  `road` VARCHAR(10) NOT NULL,
+  `start` INT(4) NOT NULL,
+  `end` INT(4) NOT NULL,
+  `road_name` VARCHAR(10) NOT NULL,
+  `road_type` VARCHAR(10) NOT NULL,
   `black_point` TINYINT(1) NOT NULL,
-  `singposting` TINYINT(1) NOT NULL,
+  `signposting` TINYINT(1) NOT NULL,
   `radar` TINYINT(1) NOT NULL,
   PRIMARY KEY (`idKmPoint`))
 ENGINE = InnoDB;
@@ -82,40 +85,40 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `traffic`.`Infractions`
+-- Table `traffic`.`Infraction`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `traffic`.`Infractions` ;
+DROP TABLE IF EXISTS `traffic`.`Infraction` ;
 
-CREATE TABLE IF NOT EXISTS `traffic`.`Infractions` (
+CREATE TABLE IF NOT EXISTS `traffic`.`Infraction` (
   `idInfraction` INT NOT NULL,
-  `idDrivers` INT NOT NULL,
+  `idDriver` INT NOT NULL,
   `idDatetime` INT NOT NULL,
   `idKmPoint` INT NOT NULL,
   `idVehicle` INT NOT NULL,
-  `description` VARCHAR(100) NOT NULL,
   `type` ENUM('low', 'medium', 'high') NOT NULL,
-  `penalty` VARCHAR(100) NOT NULL,
+  `description` VARCHAR(100) NOT NULL,
+  `penalty` INT(3) NOT NULL,
   PRIMARY KEY (`idInfraction`),
-  INDEX `fk_Infractions_Drivers_idx` (`idDrivers` ASC),
-  INDEX `fk_Infractions_DateTime1_idx` (`idDatetime` ASC),
-  INDEX `fk_Infractions_KmPoint1_idx` (`idKmPoint` ASC),
-  INDEX `fk_Infractions_Vehicle1_idx` (`idVehicle` ASC),
-  CONSTRAINT `fk_Infractions_Drivers`
-    FOREIGN KEY (`idDrivers`)
-    REFERENCES `traffic`.`Drivers` (`idDrivers`)
+  INDEX `fk_Infraction_Driver_idx` (`idDriver` ASC),
+  INDEX `fk_Infraction_DateTime1_idx` (`idDatetime` ASC),
+  INDEX `fk_Infraction_KmPoint1_idx` (`idKmPoint` ASC),
+  INDEX `fk_Infraction_Vehicle1_idx` (`idVehicle` ASC),
+  CONSTRAINT `fk_Infraction_Driver`
+    FOREIGN KEY (`idDriver`)
+    REFERENCES `traffic`.`Driver` (`idDriver`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Infractions_DateTime1`
+  CONSTRAINT `fk_Infraction_DateTime1`
     FOREIGN KEY (`idDatetime`)
     REFERENCES `traffic`.`DateTime` (`idDatetime`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Infractions_KmPoint1`
+  CONSTRAINT `fk_Infraction_KmPoint1`
     FOREIGN KEY (`idKmPoint`)
     REFERENCES `traffic`.`KmPoint` (`idKmPoint`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Infractions_Vehicle1`
+  CONSTRAINT `fk_Infraction_Vehicle1`
     FOREIGN KEY (`idVehicle`)
     REFERENCES `traffic`.`Vehicle` (`idVehicle`)
     ON DELETE NO ACTION

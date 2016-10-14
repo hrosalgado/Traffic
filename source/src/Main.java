@@ -21,8 +21,12 @@ public class Main{
 		// Dataset.descriptionInfraction();
 		// Dataset.infractions(100000); //
 		
-		/** Datasets to database **/
+		/** Datasets to sql database **/
 		Connection connection = Database.ConnectDB();
-		Database.addDatetime(connection);
+		// Database.addDatetime(connection);
+		// Database.addDriver(connection);
+		// Database.addKmPoint(connection);
+		// Database.vehicle(connection);
+		Database.infraction(connection);
 	}
 }

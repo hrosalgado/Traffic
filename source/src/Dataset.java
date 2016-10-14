@@ -52,13 +52,9 @@ public class Dataset{
 				int randAge = rand.nextInt((85 - 18) + 1) + 18;
 				file.write("" + randAge);
 				
-				// sex
+				// sex (0: male, 1: female)
 				int randSex = rand.nextInt((1 - 0) + 1);
-				if(randSex == 0){
-					file.write("male");
-				}else{
-					file.write("female");
-				}
+				file.write("" + randSex);
 				
 				// experience
 				int randExperience = rand.nextInt((67 - 0) + 1);
@@ -74,9 +70,9 @@ public class Dataset{
 				// illness
 				float randIllness = rand.nextFloat();
 				if(randIllness > 0.80){
-					file.write("true");
+					file.write("" + 1);
 				}else{
-					file.write("false");
+					file.write("" + 0);
 				}
 				
 				file.endRecord();
@@ -101,7 +97,6 @@ public class Dataset{
 			if(fileExists){
 				File f = new File("datetime.csv");
 				f.delete();
-				
 			}
 			
 			// Create a csv file
@@ -196,18 +191,18 @@ public class Dataset{
 							
 							// Weekend
 							if(contDays == 6 || contDays == 7){
-								file.write("True");
+								file.write("" + 1);
 							}else{
-								file.write("False");
+								file.write("" + 0);
 							}
 							
 							// Holiday
 							if(day == 1 && month == 1 || day == 6 && month == 1 || day == 15 && month == 8 || 
 								day == 12 && month == 10 || day == 1 && month == 11 || day == 6 && month == 12 ||
 								day == 8 && month == 12 || day == 25 && month == 12){
-								file.write("True");
+								file.write("" + 1);
 							}else{
-								file.write("False");
+								file.write("" + 0);
 							}
 							
 							// Special season
@@ -380,17 +375,17 @@ public class Dataset{
 				
 				// Drive_permission (true = need carnet, false = not need carnet)
 				if(types[randType] == "Without_carnet"){
-					file.write("false");
+					file.write("" + 0);
 				}else{
-					file.write("true");
+					file.write("" + 1);
 				}
 				
 				// electric
 				float randElectric = rand.nextFloat();
 				if(randElectric > 0.9){
-					file.write("true");
+					file.write("" + 1);
 				}else{
-					file.write("false");
+					file.write("" + 0);
 				}
 				
 				file.endRecord();
@@ -531,23 +526,23 @@ public class Dataset{
 					
 					float randBlackPoint = rand.nextFloat();
 					if(randBlackPoint > 0.9){
-						km.write("true");
+						km.write("" + 1);
 					}else{
-						km.write("false");
+						km.write("" + 0);
 					}
 					
 					float randSignposting = rand.nextFloat();
 					if(randSignposting > 0.4){
-						km.write("true");
+						km.write("" + 1);
 					}else{
-						km.write("false");
+						km.write("" + 0);
 					}
 					
 					float randRadar = rand.nextFloat();
 					if(randRadar > 0.7){
-						km.write("true");
+						km.write("" + 1);
 					}else{
-						km.write("false");
+						km.write("" + 0);
 					}
 					
 					km.endRecord();
