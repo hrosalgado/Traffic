@@ -5,24 +5,24 @@ public class Main{
 	public static void main(String[] args){
 		/** Create datasets **/
 		/* Drivers */
-		// Dataset.drivers(20000); //
+		// Dataset.drivers(40);
 		
 		/* Datetime */
-		// Dataset.datetime(2000, 2016);
+		// Dataset.checkDatetime(2000, 2016);
 		
 		/* Vehicles */
-		// Dataset.vehicles(5000); //
+		// Dataset.vehicles(20);
 		
 		/* KmPoint */
 		// Dataset.roads();
-		// Dataset.kmPoint();
+		 Dataset.kmPoint();
 		
 		/* Infractions */
 		// Dataset.descriptionInfraction();
-		// Dataset.infractions(100000); //
+		// Dataset.infractions(10);
 		
 		/** Datasets to sql database **/
-		Connection connection = Database.ConnectDB();
+		// Connection connection = Database.ConnectDB();
 		// Database.addDatetime(connection);
 		// Database.addDriver(connection);
 		// Database.addKmPoint(connection);

@@ -233,8 +233,8 @@ public class Database{
 				idInfraction = Integer.parseInt(file.get("infraction_id"));
 				idDriver = Integer.parseInt(file.get("driver_id"));
 				idDatetime = Integer.parseInt(file.get("datetime_id"));
-				idKmPoint = Integer.parseInt(file.get("vehicle_id"));
-				idVehicle = Integer.parseInt(file.get("km_id"));
+				idKmPoint = Integer.parseInt(file.get("km_id"));
+				idVehicle = Integer.parseInt(file.get("vehicle_id"));
 				type = file.get("type");
 				description = file.get("description");
 				penalty = Integer.parseInt(file.get("penalty"));

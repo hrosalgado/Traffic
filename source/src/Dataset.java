@@ -2,6 +2,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -10,64 +12,62 @@ import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
 
 public class Dataset{
+	// Returns the index of a file
+	public static String getIndexLastFile(File folder){
+		String index;
+		
+		if(folder.list().length == 0){
+			index = "0";
+		}else{
+			String lastFile = folder.list()[folder.list().length - 1];
+			index = Integer.toString(Integer.parseInt(lastFile.substring(lastFile.indexOf("_") + 1, lastFile.indexOf("."))) + 1);
+		}
+		
+		return index;
+	}
+	
 	// Create a csv file "Drivers"
 	public static void drivers(int amount){
-		boolean fileExists = new File("drivers.csv").exists();
+		Random rand = new Random();
+		
+		// Driver directory
+		File folder = new File("store/driver/");
 		
 		try{
 			// Create a csv file
-			CsvWriter file = new CsvWriter(new FileWriter("drivers.csv", true), ',');
+			CsvWriter file = new CsvWriter(new FileWriter("store/driver/drivers_" + getIndexLastFile(folder) + ".csv", true), ',');
 			
-			int id = 0;
+			// Write header
+			file.write("age");
+			file.write("sex");
+			file.write("experience");
+			file.write("previous_infractions");
+			file.write("illness");
 			
-			// If file doesn't exist, write header line
-			if(!fileExists){
-				file.write("id");
-				file.write("age");
-				file.write("sex");
-				file.write("experience");
-				file.write("previous_infractions");
-				file.write("illness");
-				
-				file.endRecord();
-			}else{
-				CsvReader readDrivers = new CsvReader("drivers.csv");
-				
-				int countDrivers = 0;
-				while(readDrivers.readRecord()){
-					countDrivers++;
-				}
-				
-				id = countDrivers - 1;
-			}
+			file.endRecord();
 			
-			// Else assume that file has a correct header line and write new records
-			Random rand = new Random();
-			
-			for(int i = id; i < amount + id; i++){
-				// id
-				file.write("" + i);
-				
-				// age
+			// Write record
+			for(int i = 0; i < amount; i++){
+				// Age
 				int randAge = rand.nextInt((85 - 18) + 1) + 18;
 				file.write("" + randAge);
 				
-				// sex (0: male, 1: female)
+				// Sex (0: male, 1: female)
 				int randSex = rand.nextInt((1 - 0) + 1);
 				file.write("" + randSex);
 				
-				// experience
+				// Experience
 				int randExperience = rand.nextInt((67 - 0) + 1);
 				while(randExperience > randAge - 18){
 					randExperience = rand.nextInt((67 - 0) + 1);
 				}
 				file.write("" + randExperience);
 				
-				// previous infractions
+				// Previous infractions
 				int randPreviousInfractions = rand.nextInt((10 - 0) + 1);
 				file.write("" + randPreviousInfractions);
 				
-				// illness
+				// Illness
 				float randIllness = rand.nextFloat();
 				if(randIllness > 0.80){
 					file.write("" + 1);
@@ -80,45 +80,104 @@ public class Dataset{
 			
 			// Close file
 			file.close();
-		}catch(Exception e) {
+		}catch(IOException e){
 			e.printStackTrace();
+		}
+		
+		System.out.println(amount + " drivers added");
+	}
+	
+	// Check if it is possible to write dates and write it when true
+	public static void checkDatetime(int start, int end){
+		// Check if start year is smaller than end year
+		if(start > end){
+			System.out.println("Start must be smaller or equal than end.");
+		}else{
+			// Check if file exists
+			boolean fileExists = new File("store/datetime/datetime.csv").exists();
+			
+			try{
+				// Create a csv file
+				CsvWriter newFile = new CsvWriter(new FileWriter("store/datetime/datetime.csv", true), ',');
+				
+				if(fileExists){
+					// Get the first and the last year in the datetime
+					HashMap<String, Integer> years = new HashMap<String, Integer>();
+					
+					CsvReader file = new CsvReader("store/datetime/datetime.csv");
+					
+					file.readHeaders();
+					
+					while(file.readRecord()){
+						years.put(file.get("year"), Integer.parseInt(file.get("year")));
+					}
+					
+					int first = Collections.min(years.values());
+					int last = Collections.max(years.values());
+					
+					// Check if it is possible to write new years with the condition of not to repeating any year.
+					if(start < first && end < first || start > last && end > last){
+						datetime(newFile, start, end);
+						System.out.println("Datetime: " + start + " to " + end + " added.");
+						
+						System.out.println("1");
+					}
+					
+					if(start < first && end >= first && end <= last){
+						datetime(newFile, start, first - 1);
+						System.out.println("Datetime: " + start + " to " + (first - 1) + " added.");
+						
+						System.out.println("2");
+					}
+					
+					if(start < first && end > last){
+						datetime(newFile, start, first - 1);
+						System.out.println("Datetime: " + start + " to " + (first - 1) + " added.");
+						
+						newFile = new CsvWriter(new FileWriter("store/datetime/datetime.csv", true), ',');
+						datetime(newFile, last + 1, end);
+						System.out.println("Datetime: " + (last + 1) + " to " + end + " added.");
+					}
+					
+					if(start >= first && start <= last && end > last){
+						datetime(newFile, last + 1, end);
+						System.out.println("Datetime: " + (last + 1) + " to " + end + " added.");
+					}
+					
+					if(start >= first && start <= last && end >= first && end <= last){
+						System.out.println("This period of time already exists.");
+					}
+				}else{
+					// Write header line
+					newFile.write("day");
+					newFile.write("month");
+					newFile.write("year");
+					newFile.write("hour");
+					newFile.write("season");
+					newFile.write("weather");
+					newFile.write("weekend");
+					newFile.write("holiday");
+					
+					newFile.endRecord();
+					
+					datetime(newFile, start, end);
+					System.out.println("Datetime: " + start + " to " + end + " added.");
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	// Create a csv file "Datetime"
-	public static void datetime(int start, int end){
+	public static void datetime(CsvWriter file, int start, int end){
+		Random rand = new Random();
+		
 		// Dicts
 		String [] weather = {"sunny", "rainy", "cloudy", "foggy"};
 		
-		boolean fileExists = new File("datetime.csv").exists();
-		
 		try{
-			// Delete file if exists
-			if(fileExists){
-				File f = new File("datetime.csv");
-				f.delete();
-			}
-			
-			// Create a csv file
-			CsvWriter file = new CsvWriter(new FileWriter("datetime.csv", true), ',');
-			
-			// Write header line
-			file.write("id");
-			file.write("day");
-			file.write("month");
-			file.write("year");
-			file.write("hour");
-			file.write("season");
-			file.write("weather");
-			file.write("weekend");
-			file.write("holiday");
-			
-			file.endRecord();
-			
 			// Write records
-			Random rand = new Random();
-			
-			int id = 0;
 			int contDays = 1;
 			int maxDays = 0;
 			for(int year = start; year <= end; year++){
@@ -145,10 +204,7 @@ public class Dataset{
 					}
 					
 					for(int day = 1; day <= maxDays; day++){					
-						for(int hour = 0; hour < 24; hour++){
-							// Id
-							file.write("" + id);
-							
+						for(int hour = 0; hour < 24; hour++){							
 							// Day
 							file.write("" + day);
 							
@@ -205,12 +261,7 @@ public class Dataset{
 								file.write("" + 0);
 							}
 							
-							// Special season
-							// ¿?
-							
 							file.endRecord();
-							
-							id++;
 						}
 						if(contDays == 7){
 							contDays = 1;
@@ -223,13 +274,15 @@ public class Dataset{
 			
 			// Close file
 			file.close();
-		}catch(Exception e) {
+		}catch(Exception e){
 			e.printStackTrace();
 		}
 	}
 	
 	// Create a csv file "Vehicles"
 	public static void vehicles(int amount){
+		Random rand = new Random();
+		
 		// Dicts
 		String [] carBrands = {"Acura", "Alfa Romeo", "Aston Martin", "Audi", "Bentley", "BMW", "Bugatti", "Cadillac", "Chevrolet", "Chrysler", "Citroen",
 							"Dodge", "Ferrari", "Fiat", "Ford", "Honda", "Hyunday", "Infiniti", "Jaguar", "Jeep", "KIA", "Koenigsegg", "Lamborgini",
@@ -249,44 +302,28 @@ public class Dataset{
 		
 		String [] types = {"Car", "Lorry", "Motorbyke", "Van", "Tractor", "Without_carnet"};
 		
-		boolean fileExists = new File("vehicles.csv").exists();
+		// Vehicles directory
+		File folder = new File("store/vehicle/");
 		
 		try{
 			// Create a csv file
-			CsvWriter file = new CsvWriter(new FileWriter("vehicles.csv", true), ',');
+			CsvWriter file = new CsvWriter(new FileWriter("store/vehicle/vehicles_" + getIndexLastFile(folder) + ".csv", true), ',');
 			
 			int id = 0;
 			
-			// If file doesn't exist, write header line
-			if(!fileExists){
-				file.write("id");
-				file.write("type");
-				file.write("brand");
-				file.write("car_spaces");
-				file.write("passengers");
-				file.write("antiquity"); // years
-				file.write("drive_permission");
-				file.write("electric");
-				
-				file.endRecord();
-			}else{
-				CsvReader readVehicles = new CsvReader("vehicles.csv");
-				
-				int countVehicles = 0;
-				while(readVehicles.readRecord()){
-					countVehicles++;
-				}
-				
-				id = countVehicles - 1;
-			}
+			// Write header line
+			file.write("type");
+			file.write("brand");
+			file.write("car_spaces");
+			file.write("passengers");
+			file.write("antiquity"); // years
+			file.write("drive_permission");
+			file.write("electric");
 			
-			// Else assume that file has a correct header line and write new records
-			Random rand = new Random();
+			file.endRecord();
 			
-			for(int i = id; i < amount + id; i++){
-				// id
-				file.write("" + i);
-				
+			// Write record
+			for(int i = id; i < amount + id; i++){				
 				// type
 				int randType = rand.nextInt(6);
 				file.write(types[randType]);
@@ -391,7 +428,6 @@ public class Dataset{
 				file.endRecord();
 			}
 			
-			
 			// Close file
 			file.close();
 		}catch(Exception e){
@@ -406,7 +442,7 @@ public class Dataset{
 			// Storage roads
 			String [][] dataRoads = new String[413][4];
 			
-			CsvReader roadsAux = new CsvReader("roadsAux.csv");
+			CsvReader roadsAux = new CsvReader("store/km/roadsAux.csv");
 			
 			roadsAux.readHeaders();
 			
@@ -448,7 +484,7 @@ public class Dataset{
 			roadsAux.close();
 			
 			// Create a csv road
-			CsvWriter roads = new CsvWriter("roads.csv");
+			CsvWriter roads = new CsvWriter("store/km/roads.csv");
 			
 			// Header
 			roads.write("name");
@@ -476,17 +512,16 @@ public class Dataset{
 	
 	// Create a csv file "km_point"
 	public static void kmPoint(){
-		boolean fileExists = new File("km.csv").exists();
-		
 		Random rand = new Random();
 		
+		boolean fileExists = new File("store/km/km.csv").exists();
+				
 		try{
-			// Create a csv
-			CsvWriter km = new CsvWriter("km.csv");
+			// Create a csv file
+			CsvWriter km = new CsvWriter("store/km/km.csv");
 			
-			// If file doesn't exist, write header line
+			// Write header line
 			if(!fileExists){
-				km.write("id");
 				km.write("start");
 				km.write("end");
 				km.write("road_name");
@@ -497,21 +532,17 @@ public class Dataset{
 				
 				km.endRecord();
 			}
-			
-			// Record
-			CsvReader roads = new CsvReader("roads.csv");
+				
+			// Write record
+			CsvReader roads = new CsvReader("store/km/roads.csv");
 			
 			roads.readHeaders();
 			
-			int id = 0;
 			while(roads.readRecord()){
 				int start = Integer.parseInt(roads.get("start"));
 				int end = Integer.parseInt(roads.get("end"));
 				
-				for(int i = start; i <= end; i++){
-					//id
-					km.write("" + id);
-					
+				for(int i = start; i <= end; i++){					
 					// start
 					km.write("" + i);
 					
@@ -524,6 +555,7 @@ public class Dataset{
 					// type
 					km.write(roads.get("type"));
 					
+					// black point
 					float randBlackPoint = rand.nextFloat();
 					if(randBlackPoint > 0.9){
 						km.write("" + 1);
@@ -531,6 +563,7 @@ public class Dataset{
 						km.write("" + 0);
 					}
 					
+					// signposting
 					float randSignposting = rand.nextFloat();
 					if(randSignposting > 0.4){
 						km.write("" + 1);
@@ -538,6 +571,7 @@ public class Dataset{
 						km.write("" + 0);
 					}
 					
+					// radar
 					float randRadar = rand.nextFloat();
 					if(randRadar > 0.7){
 						km.write("" + 1);
@@ -546,55 +580,37 @@ public class Dataset{
 					}
 					
 					km.endRecord();
-					
-					id++;
 				}
 			}
 			
 			km.close();
 		}catch(Exception e){
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 	}
 	
 	// Create a csv infractions
-	public static void infractions(int amount){
+	/*public static void infractions(int amount){
 		Random rand = new Random();
 		
-		boolean fileExists = new File("infractions.csv").exists();
+		File folder = new File("store/infraction/");
 		
 		try{
 			// Create a csv file infractions
-			CsvWriter infractions = new CsvWriter(new FileWriter("infractions.csv", true), ',');
+			CsvWriter infractions = new CsvWriter(new FileWriter("store/infraction/infractions_" + getIndexLastFile(folder) + ".csv", true), ',');
 			
-			int id = 0;
+			// Write header
+			infractions.write("driver_id");
+			infractions.write("datetime_id");
+			infractions.write("km_id");
+			infractions.write("vehicle_id");
+			infractions.write("type");
+			infractions.write("description");
+			infractions.write("penalty");
 			
-			// Header
-			if(!fileExists){
-				id = 0;
-				
-				infractions.write("infraction_id");
-				infractions.write("driver_id");
-				infractions.write("datetime_id");
-				infractions.write("vehicle_id");
-				infractions.write("km_id");
-				infractions.write("type");
-				infractions.write("description");
-				infractions.write("penalty");
-				
-				infractions.endRecord();
-			}else{
-				CsvReader readInfractions = new CsvReader("infractions.csv");
-				
-				int countInfractions = 0;
-				while(readInfractions.readRecord()){
-					countInfractions++;
-				}
-				
-				id = countInfractions - 1;
-			}
+			infractions.endRecord();
 			
-			// Record
+			// Record header
 			// Driver
 			CsvReader driver = new CsvReader("drivers.csv");
 			driver.readHeaders();
@@ -647,7 +663,7 @@ public class Dataset{
 				i++;
 			}
 				
-			for(int k = id; k < amount + id; k++){
+			for(int k = 0; k < amount; k++){
 				// infraction_id
 				infractions.write("" + k);
 				
@@ -659,13 +675,14 @@ public class Dataset{
 				int datetimeId = rand.nextInt(countDatetime);
 				infractions.write("" + datetimeId);
 				
-				// vehicle_id
-				int vehicleId = rand.nextInt(countVehicle);
-				infractions.write("" + vehicleId);
-				
 				// km_id
 				int kmId = rand.nextInt(countKm);
 				infractions.write("" + kmId);
+				
+				// vehicle_id
+				int vehicleId = rand.nextInt(countVehicle);
+				infractions.write("" + vehicleId);
+				System.out.println("Vehicle ID: " + vehicleId);
 				
 				// description, type & penalty
 				int randDescTypePenalty = rand.nextInt(45);
@@ -717,5 +734,5 @@ public class Dataset{
 		}catch(IOException e){
 			e.printStackTrace();
 		}
-	}
+	}*/
 }
