@@ -5,12 +5,14 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 -- User
 -- -----------------------------------------------------
+/* 
 GRANT USAGE ON *.* TO 'traffic'@'localhost';
 DROP USER 'traffic'@'localhost';
 CREATE USER 'traffic'@'localhost' IDENTIFIED BY 'traffic';
 GRANT USAGE ON * . * TO 'traffic'@'localhost' IDENTIFIED BY 'traffic'
 WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;
 GRANT ALL PRIVILEGES ON traffic . * TO 'traffic'@'localhost' WITH GRANT OPTION;
+*/
 
 -- -----------------------------------------------------
 -- Schema traffic
@@ -25,7 +27,7 @@ USE `traffic`;
 DROP TABLE IF EXISTS `Driver`;
 
 CREATE TABLE IF NOT EXISTS `Driver`(
-  `idDriver` INT NOT NULL,
+  `idDriver` INT NOT NULL AUTO_INCREMENT,
   `age` INT(2) NOT NULL,
   `sex` TINYINT(1) NOT NULL,
   `experience` INT(2) NOT NULL,
@@ -40,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `Driver`(
 DROP TABLE IF EXISTS `DateTime`;
 
 CREATE TABLE IF NOT EXISTS `DateTime`(
-  `idDatetime` INT NOT NULL,
+  `idDatetime` INT NOT NULL AUTO_INCREMENT,
   `day` INT(2) NOT NULL,
   `month` INT(2) NOT NULL,
   `year` INT(4) NOT NULL,
@@ -58,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `DateTime`(
 DROP TABLE IF EXISTS `traffic`.`KmPoint`;
 
 CREATE TABLE IF NOT EXISTS `traffic`.`KmPoint`(
-  `idKmPoint` INT NOT NULL,
+  `idKmPoint` INT NOT NULL AUTO_INCREMENT,
   `start` INT(4) NOT NULL,
   `end` INT(4) NOT NULL,
   `road_name` VARCHAR(10) NOT NULL,
@@ -75,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `traffic`.`KmPoint`(
 DROP TABLE IF EXISTS `Vehicle`;
 
 CREATE TABLE IF NOT EXISTS `Vehicle`(
-  `idVehicle` INT NOT NULL,
+  `idVehicle` INT NOT NULL AUTO_INCREMENT,
   `type` VARCHAR(45) NOT NULL,
   `brand` VARCHAR(45) NOT NULL,
   `car_spaces` INT(1) NOT NULL,
@@ -92,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `Vehicle`(
 DROP TABLE IF EXISTS `Infraction`;
 
 CREATE TABLE IF NOT EXISTS `Infraction` (
-  `idInfraction` INT NOT NULL,
+  `idInfraction` INT NOT NULL AUTO_INCREMENT,
   `idDriver` INT NOT NULL,
   `idDatetime` INT NOT NULL,
   `idKmPoint` INT NOT NULL,
@@ -103,24 +105,16 @@ CREATE TABLE IF NOT EXISTS `Infraction` (
   PRIMARY KEY (`idInfraction`),
   CONSTRAINT `fk_Infraction_Driver`
     FOREIGN KEY (`idDriver`)
-    REFERENCES `Driver` (`idDriver`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    REFERENCES `Driver` (`idDriver`),
   CONSTRAINT `fk_Infraction_DateTime1`
     FOREIGN KEY (`idDatetime`)
-    REFERENCES `DateTime` (`idDatetime`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    REFERENCES `DateTime` (`idDatetime`),
   CONSTRAINT `fk_Infraction_KmPoint1`
     FOREIGN KEY (`idKmPoint`)
-    REFERENCES `KmPoint` (`idKmPoint`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    REFERENCES `KmPoint` (`idKmPoint`),
   CONSTRAINT `fk_Infraction_Vehicle1`
     FOREIGN KEY (`idVehicle`)
     REFERENCES `Vehicle` (`idVehicle`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
 ) ENGINE = InnoDB;
 
 SET SQL_MODE=@OLD_SQL_MODE;
