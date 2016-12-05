@@ -1,5 +1,4 @@
 import java.sql.Connection;
-import java.util.Random;
 
 public class Main{
 	// Main
