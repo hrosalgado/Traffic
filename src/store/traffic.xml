@@ -1,90 +1,90 @@
 <Schema name="New Schema1">
   <Cube name="Traffic" visible="true" cache="true" enabled="true">
-    <Table name="infraction" alias="">
+    <Table name="infraction">
     </Table>
-    <Dimension type="StandardDimension" visible="true" foreignKey="idKmPoint" name="kmpoint">
+    <Dimension type="StandardDimension" visible="true" foreignKey="idKmPoint" highCardinality="false" name="kmpoint">
       <Hierarchy name="features" visible="true" hasAll="true">
-        <Table name="kmpoint" alias="">
+        <Table name="kmpoint">
         </Table>
-        <Level name="start" visible="true" column="start" uniqueMembers="false" levelType="Regular">
+        <Level name="start" visible="true" column="start" type="Integer" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
         </Level>
-        <Level name="end" visible="true" column="end" uniqueMembers="false" levelType="Regular">
+        <Level name="end" visible="true" column="end" type="Integer" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
         </Level>
-        <Level name="black_point" visible="true" column="black_point" uniqueMembers="false" levelType="Regular">
+        <Level name="black_point" visible="true" column="black_point" type="Integer" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
         </Level>
-        <Level name="signposting" visible="true" column="signposting" uniqueMembers="false" levelType="Regular">
+        <Level name="signposting" visible="true" column="signposting" type="Integer" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
         </Level>
-        <Level name="radar" visible="true" column="radar" uniqueMembers="false" levelType="Regular">
+        <Level name="radar" visible="true" column="radar" type="Integer" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
         </Level>
       </Hierarchy>
       <Hierarchy name="road" visible="true" hasAll="true">
         <Table name="kmpoint">
         </Table>
-        <Level name="road_name" visible="true" column="road_name" uniqueMembers="false" levelType="Regular">
+        <Level name="road_name" visible="true" column="road_name" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
         </Level>
-        <Level name="road_type" visible="true" column="road_type" uniqueMembers="false" levelType="Regular">
+        <Level name="road_type" visible="true" column="road_type" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
         </Level>
       </Hierarchy>
     </Dimension>
-    <Dimension type="StandardDimension" visible="true" foreignKey="idDriver" name="Driver">
+    <Dimension type="StandardDimension" visible="true" foreignKey="idDriver" highCardinality="false" name="Driver">
       <Hierarchy name="Features" visible="true" hasAll="true">
-        <Table name="driver" alias="">
+        <Table name="driver">
         </Table>
-        <Level name="age" visible="true" column="age" uniqueMembers="false" levelType="Regular">
+        <Level name="age" visible="true" column="age" type="Integer" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
         </Level>
-        <Level name="sex" visible="true" column="sex" uniqueMembers="false" levelType="Regular">
+        <Level name="sex" visible="true" column="sex" type="Integer" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
         </Level>
-        <Level name="illness" visible="true" column="illness" uniqueMembers="false" levelType="Regular">
+        <Level name="illness" visible="true" column="illness" type="Integer" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
         </Level>
       </Hierarchy>
       <Hierarchy name="license" visible="true" hasAll="true">
-        <Table name="driver" alias="">
+        <Table name="driver">
         </Table>
-        <Level name="experience" visible="true" column="experience" uniqueMembers="false" levelType="Regular">
+        <Level name="experience" visible="true" column="experience" type="Integer" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
         </Level>
-        <Level name="previous_infractions" visible="true" column="previous_infractions" uniqueMembers="false" levelType="Regular">
+        <Level name="previous_infractions" visible="true" column="previous_infractions" type="Integer" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
         </Level>
       </Hierarchy>
     </Dimension>
-    <Dimension type="TimeDimension" visible="true" foreignKey="idDatetime" name="DateTime">
+    <Dimension type="TimeDimension" visible="true" foreignKey="idDatetime" highCardinality="false" name="DateTime">
       <Hierarchy name="datetimes" visible="true" hasAll="true">
         <Table name="datetime">
         </Table>
-        <Level name="year" visible="true" column="year" uniqueMembers="false" levelType="TimeYears">
+        <Level name="year" visible="true" column="year" type="Integer" uniqueMembers="false" levelType="TimeYears" hideMemberIf="Never">
         </Level>
-        <Level name="season" visible="true" column="season" uniqueMembers="false" levelType="TimeQuarters">
+        <Level name="season" visible="true" column="season" type="String" uniqueMembers="false" levelType="TimeQuarters" hideMemberIf="Never">
         </Level>
-        <Level name="month" visible="true" column="month" uniqueMembers="false" levelType="TimeMonths">
+        <Level name="month" visible="true" column="month" type="Integer" uniqueMembers="false" levelType="TimeMonths" hideMemberIf="Never">
         </Level>
-        <Level name="weekend" visible="true" column="weekend" uniqueMembers="false" levelType="TimeWeeks">
+        <Level name="weekend" visible="true" column="weekend" type="Integer" uniqueMembers="false" levelType="TimeWeeks" hideMemberIf="Never">
         </Level>
-        <Level name="holiday" visible="true" column="holiday" uniqueMembers="false" levelType="TimeDays">
+        <Level name="holiday" visible="true" column="holiday" type="Integer" uniqueMembers="false" levelType="TimeDays" hideMemberIf="Never">
         </Level>
-        <Level name="day" visible="true" column="day" uniqueMembers="false" levelType="TimeDays">
+        <Level name="day" visible="true" column="day" type="Integer" uniqueMembers="false" levelType="TimeDays" hideMemberIf="Never">
         </Level>
-        <Level name="weather" visible="true" column="weather" uniqueMembers="false" levelType="TimeDays">
+        <Level name="weather" visible="true" column="weather" type="String" uniqueMembers="false" levelType="TimeDays" hideMemberIf="Never">
         </Level>
-        <Level name="hour" visible="true" column="hour" uniqueMembers="false" levelType="TimeHours">
+        <Level name="hour" visible="true" column="hour" type="Integer" uniqueMembers="false" levelType="TimeHours" hideMemberIf="Never">
         </Level>
       </Hierarchy>
     </Dimension>
-    <Dimension type="StandardDimension" visible="true" foreignKey="idVehicle" name="vehicle">
+    <Dimension type="StandardDimension" visible="true" foreignKey="idVehicle" highCardinality="false" name="vehicle">
       <Hierarchy name="vehicles" visible="true" hasAll="true" primaryKey="idVehicle">
-        <Table name="vehicle" alias="">
+        <Table name="vehicle">
         </Table>
-        <Level name="type" visible="true" column="type" uniqueMembers="false" levelType="Regular">
+        <Level name="type" visible="true" column="type" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
         </Level>
-        <Level name="brand" visible="true" column="brand" uniqueMembers="false" levelType="Regular">
+        <Level name="brand" visible="true" column="brand" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
         </Level>
-        <Level name="car_spaces" visible="true" column="car_spaces" uniqueMembers="false" levelType="Regular">
+        <Level name="car_spaces" visible="true" column="car_spaces" type="Integer" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
         </Level>
-        <Level name="passengers" visible="true" column="passengers" uniqueMembers="false" levelType="Regular">
+        <Level name="passengers" visible="true" column="passengers" type="Integer" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
         </Level>
-        <Level name="antiquity" visible="true" column="antiquity" uniqueMembers="false" levelType="Regular">
+        <Level name="antiquity" visible="true" column="antiquity" type="Integer" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
         </Level>
-        <Level name="drive_permission" visible="true" column="drive_permission" uniqueMembers="false" levelType="Regular">
+        <Level name="drive_permission" visible="true" column="drive_permission" type="Integer" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
         </Level>
-        <Level name="electric" visible="true" column="electric" uniqueMembers="false" levelType="Regular">
+        <Level name="electric" visible="true" column="electric" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
         </Level>
       </Hierarchy>
     </Dimension>
@@ -92,7 +92,7 @@
     </Measure>
     <Measure name="description" column="description" datatype="String" aggregator="count" visible="true">
     </Measure>
-    <Measure name="penalty" column="penalty" datatype="Integer" aggregator="max" visible="true">
+    <Measure name="penalty" column="penalty" datatype="Integer" aggregator="sum" visible="true">
     </Measure>
   </Cube>
 </Schema>
